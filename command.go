@@ -321,6 +321,13 @@ func (c *Command) SetHelpCommand(cmd *Command) {
 	c.helpCommand = cmd
 }
 
+// SetHelpCommandShort sets help command short description
+func (c *Command) SetHelpCommandShort(shortDescription string) {
+	if c.helpCommand != nil {
+		c.helpCommand.Short = shortDescription
+	}
+}
+
 // SetHelpCommandGroupID sets the group id of the help command.
 func (c *Command) SetHelpCommandGroupID(groupID string) {
 	if c.helpCommand != nil {

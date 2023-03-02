@@ -953,6 +953,30 @@ func TestSetHelpCommand(t *testing.T) {
 	}
 }
 
+func TestSetHelpCommandShortDescription(t *testing.T) {
+	c := &Command{Use: "c", Run: emptyRun}
+	c.AddCommand(&Command{Use: "empty", Run: emptyRun})
+
+	expected := "customized short description"
+	c.SetHelpCommand(&Command{
+		Use:   "help [command]",
+		Short: "Help about any command",
+		Long: `Help provides help for any command in the application.
+	Simply type ` + c.Name() + ` help [path to command] for full details.`,
+		Run: func(c *Command, _ []string) { c.Print(expected) },
+	})
+	c.SetHelpCommandShort("customized short description")
+
+	got, err := executeCommand(c, "help")
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+
+	if got != expected {
+		t.Errorf("Expected to contain %q, got %q", expected, got)
+	}
+}
+
 func TestHelpFlagExecuted(t *testing.T) {
 	rootCmd := &Command{Use: "root", Long: "Long description", Run: emptyRun}
 
